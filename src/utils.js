@@ -4,13 +4,6 @@
  *
 ********************************************************/
 
-// DUMMY CODE FOR DEBUG
-function dumpNodes(nodes) {
-    printErr(JSON.stringify(nodes, function(k, v) {
-        return k == 'parent' ? (v ? v.x + ',' + v.y : v) : v;
-    }, 2));
-}
-
 function idDirection(id) {
     return id === 0 ? DIR_RIGHT : (id === 1 ? DIR_LEFT : DIR_BOTTOM);
 }

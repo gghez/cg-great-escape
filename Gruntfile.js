@@ -17,7 +17,7 @@ module.exports = function (grunt) {
             src: {
                 files: [
                     {
-                        src: ['src/utils.js', 'src/init.js', 'src/astar/*', 'src/index.js'],
+                        src: ['src/debug.js', 'src/utils.js', 'src/init.js', 'src/astar/*', 'src/index.js'],
                         dest: 'dist/great-escape.js'
                     }
                 ]
