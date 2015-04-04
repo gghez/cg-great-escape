@@ -20,7 +20,7 @@ function Node(x, y, parent, action) {
     this.action = action;
 }
 
-Node.prototype.cost = function(player) {
+Node.prototype.cost = function (player) {
     return this._cost !== undefined ? this._cost :
         (this._cost =
             (this.action == ACTION_LEFT && player.direction == DIR_LEFT) ||
@@ -31,12 +31,12 @@ Node.prototype.cost = function(player) {
                 (this.action == ACTION_UP && player.direction == DIR_BOTTOM) ? 4 : 2));
 };
 
-Node.prototype.pathCost = function(player) {
+Node.prototype.pathCost = function (player) {
     return this._pathCost !== undefined ? this._pathCost :
         (this._pathCost = this.cost(player) + (this.parent ? this.parent.pathCost(player) : 0));
 };
 
-Node.prototype.nearest = function() {
+Node.prototype.nearest = function () {
     var ant = this,
         next;
     while (ant.parent) {
@@ -47,14 +47,18 @@ Node.prototype.nearest = function() {
     return next;
 };
 
-Node.prototype.pathContains = function(x, y) {
+Node.prototype.pathContains = function (x, y) {
     var ant = this;
     while ((ant = ant.parent) && (ant.x != x || ant.y != y));
     return !!ant;
 };
 
-Node.prototype.isTargetForPlayer = function(player) {
+Node.prototype.isTargetForPlayer = function (player) {
     return (player.direction == DIR_LEFT && this.x === 0) ||
         (player.direction == DIR_RIGHT && this.x == BOARD_WIDTH - 1) ||
         (player.direction == DIR_BOTTOM && this.y == BOARD_HEIGHT - 1);
 };
+
+if (typeof module == 'object' && module.exports) {
+    module.exports = Node;
+}

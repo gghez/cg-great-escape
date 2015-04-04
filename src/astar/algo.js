@@ -4,6 +4,7 @@
  *
  *******************************************************/
 
+
 /**
  * Finds cheapest node from listed
  *
@@ -14,13 +15,34 @@
 function best(nodes, player) {
     var minCost, node;
 
-    nodes.filter(function(n) {
+    nodes.filter(function (n) {
         return !n.closed;
-    }).forEach(function(n) {
+    }).forEach(function (n) {
         var cost = n.pathCost(player);
         if (!minCost || cost < minCost) {
             minCost = cost;
             node = n;
+        }
+    });
+
+    return node;
+}
+
+/**
+ * Finds node at location among nodes.
+ *
+ * @param x
+ * @param y
+ * @param nodes
+ * @returns {*}
+ */
+function nodeAt(x, y, nodes) {
+    var node = null;
+
+    nodes.some(function (n) {
+        if (n.x == x && n.y == y) {
+            node = n;
+            return true;
         }
     });
 
@@ -37,29 +59,35 @@ function findTarget(player) {
     var node, nodes = [new Node(player.x, player.y)];
 
     while (!(node = best(nodes, player)).isTargetForPlayer(player)) {
-        //printErr('Best node found');
-        //dumpNodes(node);
 
-        var eligibles = [];
         if (canMoveLeft(node) && !node.pathContains(node.x - 1, node.y)) {
-            eligibles.push(new Node(node.x - 1, node.y, node, ACTION_LEFT));
+            /*var newLeftNode=new Node(node.x - 1, node.y, node, ACTION_LEFT);
+             var leftNode = nodeAt(node.x-1,node.y,nodes);
+             if (!leftNode || leftNode.pathCost(player) > newLeftNode.pathCost(player)){
+             nodes.push(newLeftNode);
+             }*/
+            nodes.push(new Node(node.x + 1, node.y, node, ACTION_LEFT));
         }
         if (canMoveRight(node) && !node.pathContains(node.x + 1, node.y)) {
-            eligibles.push(new Node(node.x + 1, node.y, node, ACTION_RIGHT));
+            nodes.push(new Node(node.x + 1, node.y, node, ACTION_RIGHT));
         }
         if (canMoveUp(node) && !node.pathContains(node.x, node.y - 1)) {
-            eligibles.push(new Node(node.x, node.y - 1, node, ACTION_UP));
+            nodes.push(new Node(node.x, node.y - 1, node, ACTION_UP));
         }
         if (canMoveDown(node) && !node.pathContains(node.x, node.y + 1)) {
-            eligibles.push(new Node(node.x, node.y + 1, node, ACTION_DOWN));
+            nodes.push(new Node(node.x, node.y + 1, node, ACTION_DOWN));
         }
 
         node.closed = true;
-
-        if (eligibles.length) {
-            nodes = nodes.concat(eligibles);
-        }
     }
 
     return node;
+}
+
+if (typeof module == 'object' && module.exports) {
+    module.exports = {
+        best: best,
+        nodeAt: nodeAt,
+        findTarget: findTarget
+    };
 }

@@ -22,6 +22,13 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+
+        watch: {
+            src: {
+                files: 'src/**/*.js',
+                tasks: ['concat:src']
+            }
         }
     });
 
