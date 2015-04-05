@@ -53,12 +53,6 @@ Node.prototype.pathContains = function (x, y) {
     return !!ant;
 };
 
-Node.prototype.isTargetForPlayer = function (player) {
-    return (player.direction == DIR_LEFT && this.x === 0) ||
-        (player.direction == DIR_RIGHT && this.x == BOARD_WIDTH - 1) ||
-        (player.direction == DIR_BOTTOM && this.y == BOARD_HEIGHT - 1);
-};
-
-if (typeof module == 'object' && module.exports) {
-    module.exports = Node;
-}
+/* test-code */
+module.exports = Node;
+/* end-test-code */

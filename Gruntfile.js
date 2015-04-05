@@ -17,7 +17,12 @@ module.exports = function (grunt) {
             src: {
                 files: [
                     {
-                        src: ['src/debug.js', 'src/utils.js', 'src/init.js', 'src/astar/*', 'src/index.js'],
+                        src: [
+                            'src/utils.js',
+                            'src/astar/*',
+                            'src/board.js',
+                            'src/index.js'
+                        ],
                         dest: 'dist/great-escape.js'
                     }
                 ]
@@ -27,10 +32,16 @@ module.exports = function (grunt) {
         watch: {
             src: {
                 files: 'src/**/*.js',
-                tasks: ['concat:src']
+                tasks: ['compile']
+            }
+        },
+
+        strip_code: {
+            dist: {
+                src: 'dist/great-escape.js'
             }
         }
     });
 
-    grunt.registerTask('compile', ['concat:src', 'jshint:dist']);
+    grunt.registerTask('compile', ['concat:src', 'strip_code:dist', 'jshint:dist']);
 };

@@ -50,6 +50,19 @@ function nodeAt(x, y, nodes) {
 }
 
 /**
+ * Determines if a node matches a player target.
+ *
+ * @param node
+ * @param player
+ * @returns {boolean}
+ */
+function isTarget(node, player) {
+    return (player.direction == DIR_LEFT && node.x === 0) ||
+        (player.direction == DIR_RIGHT && node.x == BOARD_WIDTH - 1) ||
+        (player.direction == DIR_BOTTOM && node.y == BOARD_HEIGHT - 1);
+}
+
+/**
  * Finds best path (path-end node) for a player
  *
  * @param player
@@ -58,7 +71,7 @@ function nodeAt(x, y, nodes) {
 function findTarget(player) {
     var node, nodes = [new Node(player.x, player.y)];
 
-    while (!(node = best(nodes, player)).isTargetForPlayer(player)) {
+    while (!isTarget(node = best(nodes, player), player)) {
 
         if (canMoveLeft(node) && !node.pathContains(node.x - 1, node.y)) {
             /*var newLeftNode=new Node(node.x - 1, node.y, node, ACTION_LEFT);
@@ -66,16 +79,16 @@ function findTarget(player) {
              if (!leftNode || leftNode.pathCost(player) > newLeftNode.pathCost(player)){
              nodes.push(newLeftNode);
              }*/
-            nodes.push(new Node(node.x + 1, node.y, node, ACTION_LEFT));
+            nodes.push(new Node(node.x + 1, node.y, node, Board.ACTION_LEFT));
         }
         if (canMoveRight(node) && !node.pathContains(node.x + 1, node.y)) {
-            nodes.push(new Node(node.x + 1, node.y, node, ACTION_RIGHT));
+            nodes.push(new Node(node.x + 1, node.y, node, Board.ACTION_RIGHT));
         }
         if (canMoveUp(node) && !node.pathContains(node.x, node.y - 1)) {
-            nodes.push(new Node(node.x, node.y - 1, node, ACTION_UP));
+            nodes.push(new Node(node.x, node.y - 1, node, Board.ACTION_UP));
         }
         if (canMoveDown(node) && !node.pathContains(node.x, node.y + 1)) {
-            nodes.push(new Node(node.x, node.y + 1, node, ACTION_DOWN));
+            nodes.push(new Node(node.x, node.y + 1, node, Board.ACTION_DOWN));
         }
 
         node.closed = true;
@@ -84,10 +97,10 @@ function findTarget(player) {
     return node;
 }
 
-if (typeof module == 'object' && module.exports) {
-    module.exports = {
-        best: best,
-        nodeAt: nodeAt,
-        findTarget: findTarget
-    };
-}
+/* test-code */
+module.exports = {
+    best: best,
+    nodeAt: nodeAt,
+    findTarget: findTarget
+};
+/* end-test-code */
