@@ -10,32 +10,23 @@
  * @param x
  * @param y
  * @param parent
+ * @param cost
  * @param action
  * @constructor
  */
-function Node(x, y, parent, action) {
+function Node(x, y, parent, cost, action) {
     this.x = x;
     this.y = y;
     this.parent = parent;
+    this.cost = cost;
     this.action = action;
 }
 
-Node.prototype.cost = function (player) {
-    return this._cost !== undefined ? this._cost :
-        (this._cost =
-            (this.action == ACTION_LEFT && player.direction == DIR_LEFT) ||
-            (this.action == ACTION_RIGHT && player.direction == DIR_RIGHT) ||
-            (this.action == ACTION_DOWN && player.direction == DIR_BOTTOM) ? 1 :
-                ((this.action == ACTION_LEFT && player.direction == DIR_RIGHT) ||
-                (this.action == ACTION_RIGHT && player.direction == DIR_LEFT) ||
-                (this.action == ACTION_UP && player.direction == DIR_BOTTOM) ? 4 : 2));
-};
-
-Node.prototype.pathCost = function (player) {
-    return this._pathCost !== undefined ? this._pathCost :
-        (this._pathCost = this.cost(player) + (this.parent ? this.parent.pathCost(player) : 0));
-};
-
+/**
+ * Get the nearest node from this node root.
+ *
+ * @returns {*}
+ */
 Node.prototype.nearest = function () {
     var ant = this,
         next;
@@ -47,6 +38,13 @@ Node.prototype.nearest = function () {
     return next;
 };
 
+/**
+ * Indicates whether a location is present in node parent path.
+ *
+ * @param x
+ * @param y
+ * @returns {boolean}
+ */
 Node.prototype.pathContains = function (x, y) {
     var ant = this;
     while ((ant = ant.parent) && (ant.x != x || ant.y != y));

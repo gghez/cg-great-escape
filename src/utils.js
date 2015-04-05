@@ -58,6 +58,28 @@ function canMoveRight(p) {
     return !wallOnRight(p) && p.x < Board.WIDTH - 1;
 }
 
+function isTarget(x, y, player) {
+    return (player.direction == Board.DIR_LEFT && x === 0) ||
+        (player.direction == Board.DIR_RIGHT && x == Board.WIDTH - 1) ||
+        (player.direction == Board.DIR_BOTTOM && y == Board.HEIGHT - 1);
+}
+
+/**
+ * Calculates an action cost for a player.
+ *
+ * @param action
+ * @param player
+ * @returns {number|*}
+ */
+function actionCost(action, player) {
+    return (action == Board.ACTION_LEFT && player.direction == Board.DIR_LEFT) ||
+    (action == Board.ACTION_RIGHT && player.direction == Board.DIR_RIGHT) ||
+    (action == Board.ACTION_DOWN && player.direction == Board.DIR_BOTTOM) ? 1 :
+        ((action == Board.ACTION_LEFT && player.direction == Board.DIR_RIGHT) ||
+        (action == Board.ACTION_RIGHT && player.direction == Board.DIR_LEFT) ||
+        (action == Board.ACTION_UP && player.direction == Board.DIR_BOTTOM) ? 4 : 2);
+}
+
 /* test-code */
 module.exports = {
     otherPlayers: otherPlayers,
@@ -68,6 +90,8 @@ module.exports = {
     canMoveUp: canMoveUp,
     canMoveDown: canMoveDown,
     canMoveLeft: canMoveLeft,
-    canMoveRight: canMoveRight
+    canMoveRight: canMoveRight,
+    isTarget: isTarget,
+    actionCost: actionCost
 };
 /* end-test-code */

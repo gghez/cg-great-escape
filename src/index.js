@@ -10,5 +10,8 @@ Board.init();
  * Game turn loop
  */
 while (true) {
-    Board.play();
+    Board.initTurn();
+
+    var action = Board.aiAction(AStar);
+    print(action);
 }

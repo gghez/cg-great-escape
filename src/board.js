@@ -4,6 +4,7 @@
  *
  *******************************************************/
 
+
 var Board = {
     walls: [],
     players: [],
@@ -25,6 +26,7 @@ var Board = {
         var playerCount = parseInt(inputs[2]); // number of players (2 or 3)
         var myId = parseInt(inputs[3]); // id of my player (0 = 1st player, 1 = 2nd player, ...)
 
+        this.players = [];
         for (var i = 0; i < playerCount; i++) {
             this.players[i] = {
                 id: i,
@@ -57,13 +59,8 @@ var Board = {
             });
         }
     },
-    play: function () {
-        this.initTurn();
-
-        var target = findTarget(me);
-        var next = target.nearest();
-
-        print(next.action);
+    aiAction: function (aiAlgo) {
+        return aiAlgo.action(this);
     }
 };
 
